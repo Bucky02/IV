@@ -35,3 +35,4 @@ __pycache__/
 # Escludi anche librerie di terze parti di grandi dimensioni
 *.dll
 *.lib
+venv/
