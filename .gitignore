@@ -1,0 +1,37 @@
+# Cartelle temporanee
+[Tt]emp/
+[Ll]ibrary/
+[Oo]bj/
+[Bb]uild/
+[Bb]uilds/
+[Ll]ogs/
+[Uu]ser[Ss]ettings/
+
+# File generati da Unity
+*.pidb
+*.booproj
+*.sln
+*.userprefs
+*.csproj
+
+# File generati da Crashlytics
+crashlytics-build.properties
+
+# File generati dal plugin Jetbrains Rider
+.idea/
+.vs/
+
+# Cartella virtual environment (venv) - non deve essere tracciata
+venv/
+
+# File generati dal codice Python
+*.pyc
+__pycache__/
+
+# File di configurazione di editor di testo comuni
+.idea/
+.vscode/
+
+# Escludi anche librerie di terze parti di grandi dimensioni
+*.dll
+*.lib
