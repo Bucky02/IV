@@ -21,16 +21,9 @@ crashlytics-build.properties
 .vs/
 
 # Esclude la directory della virtual environment
-venv/
-
-# Esclude file generati
-*.dll
-*.lib
 *.pyc
 __pycache__/
 
 # Esclude altre dipendenze comuni
 .idea/
 .vscode/
-
-venv/
