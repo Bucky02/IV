@@ -32,3 +32,5 @@ __pycache__/
 # Esclude altre dipendenze comuni
 .idea/
 .vscode/
+
+venv/
