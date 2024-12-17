@@ -1,0 +1,42 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1734435156",
+        "python_version": "3.10.12 | packaged by Anaconda, Inc. | (main, Jul  5 2023, 19:01:18) [MSC v.1916 64 bit (AMD64)]",
+        "command_line_arguments": "\\\\?\\C:\\Users\\rosar\\anaconda3\\envs\\mlagents\\Scripts\\mlagents-learn Assets/config/semaforo.yaml --run-id=semaforo-train",
+        "mlagents_version": "1.1.0",
+        "mlagents_envs_version": "1.1.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.2.2+cu121",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1734435236"
+    },
+    "total": 79.58080059999975,
+    "count": 1,
+    "self": 0.005655899999510439,
+    "children": {
+        "run_training.setup": {
+            "total": 0.06774849999965227,
+            "count": 1,
+            "self": 0.06774849999965227
+        },
+        "TrainerController.start_learning": {
+            "total": 79.50739620000058,
+            "count": 1,
+            "self": 9.260000024369219e-05,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 79.5072839000004,
+                    "count": 1,
+                    "self": 79.5072839000004
+                },
+                "TrainerController._save_models": {
+                    "total": 1.9699999938893598e-05,
+                    "count": 1,
+                    "self": 1.9699999938893598e-05
+                }
+            }
+        }
+    }
+}
