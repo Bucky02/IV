@@ -1,0 +1,47 @@
+{
+    "name": "root",
+    "metadata": {
+        "timer_format_version": "0.1.0",
+        "start_time_seconds": "1734450252",
+        "python_version": "3.10.1 (tags/v3.10.1:2cd268a, Dec  6 2021, 19:10:37) [MSC v.1929 64 bit (AMD64)]",
+        "command_line_arguments": "C:\\Users\\Utente\\AppData\\Local\\Programs\\Python\\Python310\\Scripts\\mlagents-learn semaforo.yaml --run-id=2",
+        "mlagents_version": "1.1.0",
+        "mlagents_envs_version": "1.1.0",
+        "communication_protocol_version": "1.5.0",
+        "pytorch_version": "2.2.2+cpu",
+        "numpy_version": "1.23.5",
+        "end_time_seconds": "1734450279"
+    },
+    "total": 26.36777350003831,
+    "count": 1,
+    "self": 0.27865220000967383,
+    "children": {
+        "run_training.setup": {
+            "total": 0.15999750001356006,
+            "count": 1,
+            "self": 0.15999750001356006
+        },
+        "TrainerController.start_learning": {
+            "total": 25.929123800015077,
+            "count": 1,
+            "self": 0.0023752000415697694,
+            "children": {
+                "TrainerController._reset_env": {
+                    "total": 25.926725800032727,
+                    "count": 1,
+                    "self": 25.926725800032727
+                },
+                "trainer_threads": {
+                    "total": 1.300009898841381e-06,
+                    "count": 1,
+                    "self": 1.300009898841381e-06
+                },
+                "TrainerController._save_models": {
+                    "total": 2.1499930880963802e-05,
+                    "count": 1,
+                    "self": 2.1499930880963802e-05
+                }
+            }
+        }
+    }
+}

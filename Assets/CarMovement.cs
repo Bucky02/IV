@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class CarMovement : MonoBehaviour
 {
@@ -6,60 +7,80 @@ public class CarMovement : MonoBehaviour
     private bool canMove = true; // Indica se la macchina può muoversi
     public Transform trafficLight; // Riferimento al semaforo
     public float stopDistance = 15f; // Distanza dalla linea del semaforo per fermarsi
-    public float carStopDistance = 12f; // Distanza minima da un'altra macchina per fermarsi
+    public float carStopDistance = 22f; // Distanza minima da un'altra macchina per fermarsi
 
     private void Update()
-    {
-        // Controlla se l'auto può muoversi
-        canMove = CanMoveBasedOnTrafficLight() && CanMoveBasedOnCars();
+{
+    bool shouldMove = CanMoveBasedOnTrafficLight() && CanMoveBasedOnCars();
 
-        // Movimento della macchina
-        if (canMove)
-        {
-            transform.Translate(Vector3.forward * speed * Time.deltaTime);
-        }
+    if (shouldMove)
+    {
+        canMove = true;
+        transform.Translate(Vector3.forward * speed * Time.deltaTime);
     }
-
-    private bool CanMoveBasedOnTrafficLight()
+    else if (canMove)
     {
-        // Se non c'è un semaforo, continua a muoverti
-        if (trafficLight == null) return true;
+        canMove = false;
+        StartCoroutine(BrakeSmoothly());
+    }
+}
 
-        // Calcola la distanza dal semaforo
-        float distanceToLight = Vector3.Distance(transform.position, trafficLight.position);
+private IEnumerator BrakeSmoothly()
+{
+    float currentSpeed = speed;
 
-        // Controlla se il semaforo è davanti
-        Vector3 toTrafficLight = (trafficLight.position - transform.position).normalized;
-        bool isTrafficLightAhead = Vector3.Dot(transform.forward, toTrafficLight) > 0;
+    while (currentSpeed > 0)
+    {
+        currentSpeed -= speed * Time.deltaTime;
+        transform.Translate(Vector3.forward * currentSpeed * Time.deltaTime);
+        yield return null;
+    }
+}
 
-        // Se il semaforo è davanti e abbastanza vicino
-        if (isTrafficLightAhead && distanceToLight <= stopDistance)
+
+   private bool CanMoveBasedOnTrafficLight()
+{
+    if (trafficLight == null) return true;
+
+    float distanceToLight = Vector3.Distance(transform.position, trafficLight.position);
+    Vector3 toTrafficLight = (trafficLight.position - transform.position).normalized;
+    bool isTrafficLightAhead = Vector3.Dot(transform.forward, toTrafficLight) > 0;
+
+    // Debug per il semaforo
+    Debug.Log($"Distanza dal semaforo: {distanceToLight}, Semaforo davanti: {isTrafficLightAhead}");
+
+    if (isTrafficLightAhead && distanceToLight <= stopDistance)
+    {
+        Semaforo semaforoScript = trafficLight.GetComponent<Semaforo>();
+        if (semaforoScript != null)
         {
-            Semaforo semaforoScript = trafficLight.GetComponent<Semaforo>();
-            if (semaforoScript != null && semaforoScript.IsRedOrYellow())
+            Debug.Log($"Semaforo: Verde? {semaforoScript.IsGreen()}");
+            if (!semaforoScript.IsGreen()) // Cambiato da IsRedOrYellow a IsGreen
             {
-                return false; // Fermati se il semaforo è rosso o giallo
+                return false;
             }
         }
-
-        return true; // Altrimenti, muoviti
     }
+
+    return true;
+}
+
+
 
     private bool CanMoveBasedOnCars()
+{
+    RaycastHit hit;
+    if (Physics.Raycast(transform.position, transform.forward, out hit, carStopDistance))
     {
-        // Controlla se c'è un'altra macchina davanti usando un Raycast
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, carStopDistance))
+        if (hit.collider != null && hit.collider.CompareTag("Car"))
         {
-            if (hit.collider.CompareTag("Car"))
-            {
-                Debug.Log("Macchina davanti rilevata! Fermati.");
-                return false; // Fermati se c'è un'auto troppo vicina
-            }
+            return false;
         }
-
-        return true; // Altrimenti, muoviti
     }
+
+    return true;
+}
+
 
     // Debug per visualizzare il raycast e il controllo del semaforo
     private void OnDrawGizmos()

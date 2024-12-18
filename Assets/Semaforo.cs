@@ -39,47 +39,48 @@ public class Semaforo : Agent
         sensor.AddObservation(timer / maxGreenTime); // Tempo trascorso come percentuale del tempo massimo
     }
 
-    public bool IsRedOrYellow()
-    {
-        // Restituisce true se il semaforo è rosso o giallo
-        return redLightRoadA.activeSelf || yellowLightRoadA.activeSelf || redLightRoadB.activeSelf || yellowLightRoadB.activeSelf;
-    }
+    public bool IsGreen()
+{
+    return greenLightRoadA.activeSelf || greenLightRoadB.activeSelf;
+}
+
 
     public override void OnActionReceived(ActionBuffers actions)
+{
+    int action = actions.DiscreteActions[0]; // 0 = Mantieni stato, 1 = Cambia stato
+
+    timer += Time.deltaTime;
+
+    if (action == 1 && timer >= minSwitchInterval)
     {
-        // Azioni possibili: 0 = Mantieni stato, 1 = Cambia semaforo
-        int action = actions.DiscreteActions[0];
-
-        timer += Time.deltaTime;
-
-        if (action == 1 && timer >= minSwitchInterval)
-        {
-            // Cambia lo stato del semaforo
-            isRoadAGreen = !isRoadAGreen;
-            timer = 0.0f;
-            UpdateLightStates();
-        }
-
-        // Ricompense basate sul traffico
-        if (isRoadAGreen && carsOnRoadA > carsOnRoadB)
-        {
-            AddReward(0.1f); // Ricompensa per dare priorità a Road A con più traffico
-        }
-        else if (!isRoadAGreen && carsOnRoadB > carsOnRoadA)
-        {
-            AddReward(0.1f); // Ricompensa per dare priorità a Road B con più traffico
-        }
-        else
-        {
-            AddReward(-0.01f); // Penalità per scelte meno ottimali
-        }
-
-        // Penalità per mantenere il verde troppo a lungo senza necessità
-        if (timer >= maxGreenTime)
-        {
-            AddReward(-0.1f);
-        }
+        isRoadAGreen = !isRoadAGreen; // Cambia stato
+        timer = 0.0f;
+        UpdateLightStates();
     }
+
+    // Ricompense basate sul traffico
+    if (isRoadAGreen && carsOnRoadA > carsOnRoadB)
+    {
+        AddReward(0.1f);
+    }
+    else if (!isRoadAGreen && carsOnRoadB > carsOnRoadA)
+    {
+        AddReward(0.1f);
+    }
+    else
+    {
+        AddReward(-0.01f);
+    }
+
+    // Penalità per mantenere il verde troppo a lungo
+    if (timer >= maxGreenTime)
+    {
+        AddReward(-0.1f);
+        isRoadAGreen = !isRoadAGreen; // Forza il cambio
+        UpdateLightStates();
+    }
+}
+
 
     public override void Heuristic(in ActionBuffers actionsOut)
     {
