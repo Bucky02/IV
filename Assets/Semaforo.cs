@@ -12,7 +12,7 @@ public class Semaforo : Agent
 
     private int carsOnRoadA;
     private int carsOnRoadB;
-    private bool isRoadAGreen; // Stato del semaforo per Road A
+    public bool isRoadAGreen { get; private set; }
     private float timer; // Per il controllo del tempo sullo stato attuale
 
     public float maxGreenTime = 10.0f; // Tempo massimo per luce verde

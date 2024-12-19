@@ -15,7 +15,7 @@ public class CarSpawner : MonoBehaviour
         if (spawnTimer <= 0f)
         {
             SpawnCar();
-            spawnTimer = Random.Range(2, 5); // Tempo casuale tra gli spawn
+            spawnTimer = Random.Range(4, 9); // Tempo casuale tra gli spawn
         }
     }
 
@@ -35,7 +35,6 @@ public class CarSpawner : MonoBehaviour
         }
         else
         {
-            Debug.LogError("Spawn Point or Traffic Light not assigned!");
         }
     }
 }

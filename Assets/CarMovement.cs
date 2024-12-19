@@ -46,24 +46,27 @@ private IEnumerator BrakeSmoothly()
     Vector3 toTrafficLight = (trafficLight.position - transform.position).normalized;
     bool isTrafficLightAhead = Vector3.Dot(transform.forward, toTrafficLight) > 0;
 
-    // Debug per il semaforo
-    Debug.Log($"Distanza dal semaforo: {distanceToLight}, Semaforo davanti: {isTrafficLightAhead}");
-
+    // Controllo del semaforo solo se è davanti e nella distanza di stop
     if (isTrafficLightAhead && distanceToLight <= stopDistance)
     {
         Semaforo semaforoScript = trafficLight.GetComponent<Semaforo>();
         if (semaforoScript != null)
         {
-            Debug.Log($"Semaforo: Verde? {semaforoScript.IsGreen()}");
-            if (!semaforoScript.IsGreen()) // Cambiato da IsRedOrYellow a IsGreen
+            // Verifica se il semaforo della strada associata è verde
+            bool isCurrentRoadGreen = (trafficLight.name.Contains("oo") && semaforoScript.isRoadAGreen) ||
+                                      (trafficLight.name.Contains("1") && !semaforoScript.isRoadAGreen);
+
+
+            if (!isCurrentRoadGreen)
             {
-                return false;
+                return false; // Fermati se il semaforo non è verde per questa strada
             }
         }
     }
 
     return true;
 }
+
 
 
 
